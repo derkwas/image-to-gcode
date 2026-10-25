@@ -1,0 +1,52 @@
+# image-to-gcode settings. Loaded automatically from the current directory,
+# or pass another file with -c. Any value can also be overridden on the
+# command line with --set section.key=value.
+
+[machine]
+bed_width = 220.0        # drawable area, mm
+bed_height = 220.0
+origin_x = 0.0           # machine X/Y of the drawable area's front-left corner
+origin_y = 0.0           # (shift these if the pen is offset from the nozzle)
+margin = 10.0            # blank border kept around the drawing, mm
+travel_feed = 3000.0     # mm/min with the pen up
+draw_feed = 1500.0       # mm/min with the pen down
+park_x = 0.0             # where the pen goes when finished
+park_y = 0.0
+start_gcode = "G28 ; home all axes"
+end_gcode = "M84 ; disable motors"
+
+[pen]
+down_z = 0.0             # Z height while drawing (touching the paper)
+up_z = 3.0               # Z height while moving between strokes
+safe_z = 10.0            # Z height at start/end, must be >= up_z
+z_feed = 600.0           # mm/min for pen up/down moves
+down_dwell_ms = 0        # pause after the pen lands (lets ink start flowing)
+up_dwell_ms = 0          # pause after the pen lifts
+# Commands used to move the pen; {z} and {z_feed} are filled in.
+# For a servo pen lift use e.g. down_gcode = "M280 P0 S90".
+down_gcode = "G1 Z{z:.3f} F{z_feed:.0f}"
+up_gcode = "G1 Z{z:.3f} F{z_feed:.0f}"
+width = 0.4              # pen line width, mm (preview only)
+
+[image]
+mode = "outline"         # outline | centerline | hatch, combine with "+", e.g. "outline+hatch"
+threshold = "auto"       # 0-255, pixels darker than this are drawn; "auto" picks one
+invert = false           # draw the light parts instead of the dark ones
+page = 1                 # PDF page (1-based)
+pdf_dpi = 300            # PDF render resolution
+rotate = 0               # 0, 90, 180, 270 degrees counter-clockwise
+fit = "content"          # "content" fills the bed with the inked area, "page" keeps whitespace
+scale = 1.0              # fraction of the available area to fill (0-1]
+resolution = 0.1         # mm per pixel while tracing (smaller = finer, slower)
+blur = 0.0               # mm of blur before thresholding, smooths noisy scans
+simplify = 0.05          # mm of allowed deviation when simplifying paths
+min_path_length = 0.5    # drop strokes shorter than this, mm
+hatch_spacing = 0.8      # mm between fill lines in hatch mode
+hatch_angle = 45.0       # degrees
+crosshatch = false       # second hatch pass at +90 degrees
+
+[output]
+optimize = true          # reorder strokes to minimise pen-up travel
+join_distance = 0.3      # bridge gaps smaller than this without lifting, mm
+preview_scale = 4.0      # preview pixels per mm
+preview_travel = true    # show pen-up moves (light red) in the preview

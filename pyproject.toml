@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "image-to-gcode"
+version = "0.1.0"
+description = "Convert PNG/JPG/PDF images into G-code for a pen-plotter-modded 3D printer"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.24",
+    "pillow>=10",
+    "opencv-python-headless>=4.8",
+    "pymupdf>=1.24",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.scripts]
+image-to-gcode = "image_to_gcode.cli:main"
+
+[tool.setuptools]
+packages = ["image_to_gcode"]

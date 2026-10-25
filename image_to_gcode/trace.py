@@ -23,6 +23,19 @@ def outlines(mask: np.ndarray, epsilon_px: float) -> list[Polyline]:
     return paths
 
 
+def contours(mask: np.ndarray, spacing_px: float, epsilon_px: float) -> list[Polyline]:
+    """Concentric rings shrinking inward from each edge, like slicer perimeters."""
+    # Pad so the image border counts as an edge too.
+    dist = cv2.distanceTransform(np.pad(mask, 1).astype(np.uint8), cv2.DIST_L2, 5)[1:-1, 1:-1]
+    paths = []
+    # The first ring sits half a spacing inside the edge, so the pen line ends at the edge.
+    level = spacing_px / 2
+    while (inner := dist > level).any():
+        paths += outlines(inner, epsilon_px)
+        level += spacing_px
+    return paths
+
+
 def centerlines(mask: np.ndarray, epsilon_px: float) -> list[Polyline]:
     """Single strokes down the middle of each line - best for line art."""
     paths = []

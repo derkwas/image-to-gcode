@@ -43,7 +43,7 @@ class PenConfig:
 
 @dataclass
 class ImageConfig:
-    # outline | centerline | hatch, combine with "+" (e.g. "outline+hatch").
+    # outline | centerline | hatch | contour, combine with "+" (e.g. "outline+hatch").
     mode: str = "outline"
     # 0-255; pixels darker than this are inked. "auto" picks one (Otsu).
     threshold: int | str = "auto"
@@ -61,6 +61,7 @@ class ImageConfig:
     hatch_spacing: float = 0.8  # mm between hatch lines
     hatch_angle: float = 45.0  # degrees
     crosshatch: bool = False  # add a second hatch pass at +90 degrees
+    contour_spacing: float = 0.8  # mm between concentric rings in contour mode
 
 
 @dataclass
@@ -105,7 +106,7 @@ class Config:
         if p.safe_z < p.up_z:
             raise ValueError(f"pen.safe_z ({p.safe_z}) must be at or above pen.up_z ({p.up_z})")
         for mode in i.mode.split("+"):
-            if mode.strip() not in {"outline", "centerline", "hatch"}:
+            if mode.strip() not in {"outline", "centerline", "hatch", "contour"}:
                 raise ValueError(f"unknown image.mode {mode!r}")
         if i.fit not in {"content", "page"}:
             raise ValueError(f"image.fit must be 'content' or 'page', got {i.fit!r}")

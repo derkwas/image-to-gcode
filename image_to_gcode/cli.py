@@ -33,7 +33,7 @@ def build_parser() -> argparse.ArgumentParser:
     g.add_argument("--pen-up", type=float, metavar="Z", help="pen.up_z")
     g.add_argument("--bed", type=float, nargs=2, metavar=("W", "H"), help="machine.bed_width / bed_height in mm")
     g.add_argument("--margin", type=float, metavar="MM", help="machine.margin")
-    g.add_argument("--mode", help="image.mode: outline, centerline, hatch, or e.g. outline+hatch")
+    g.add_argument("--mode", help="image.mode: outline, centerline, hatch, contour, or e.g. outline+hatch")
     g.add_argument("--threshold", help='image.threshold: 0-255 or "auto"')
     g.add_argument("--page", type=int, help="image.page (PDF page, 1-based)")
     g.add_argument("--set", action="append", default=[], metavar="SECTION.KEY=VALUE",

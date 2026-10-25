@@ -72,6 +72,8 @@ def image_to_paths(gray: np.ndarray, cfg: Config) -> Traced:
             paths += trace.hatch(mask, spacing, ic.hatch_angle)
             if ic.crosshatch:
                 paths += trace.hatch(mask, spacing, ic.hatch_angle + 90)
+        elif mode == "contour":
+            paths += trace.contours(mask, ic.contour_spacing / mm_per_px, eps)
 
     # Pixel space (y down) -> machine mm (y up), centred in the drawable area.
     off_x = mc.origin_x + (mc.bed_width - draw_w) / 2

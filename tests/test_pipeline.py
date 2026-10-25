@@ -25,7 +25,7 @@ def xyz(text: str):
     return {axis: [float(v) for v in re.findall(rf"{axis}(-?\d+\.?\d*)", text)] for axis in "XYZ"}
 
 
-@pytest.mark.parametrize("mode", ["outline", "centerline", "hatch", "outline+hatch"])
+@pytest.mark.parametrize("mode", ["outline", "centerline", "hatch", "contour", "outline+hatch"])
 def test_paths_fit_inside_margins(mode):
     cfg = load_config(None, [f'image.mode="{mode}"', "machine.bed_width=150", "machine.bed_height=100",
                              "machine.origin_x=5", "machine.origin_y=7", "machine.margin=10"])
@@ -76,6 +76,20 @@ def test_centerline_keeps_loops_closed():
     assert np.allclose(loop[0], loop[-1])
     span = loop.max(axis=0) - loop.min(axis=0)
     assert span.min() > 150  # all four sides present
+
+
+def test_contour_rings_shrink_inward():
+    img = np.full((200, 200), 255, np.uint8)
+    img[20:180, 20:180] = 0
+    cfg = load_config(None, ['image.mode="contour"', "image.contour_spacing=2", "machine.margin=10"])
+    paths = image_to_paths(img, cfg).paths
+    widths = sorted((p[:, 0].max() - p[:, 0].min() for p in paths), reverse=True)
+    # The 160 px square (plus 2 px crop padding each side) is scaled to 200 mm,
+    # then filled with rings 2 mm apart: ~48 rings, each 4 mm narrower.
+    square = 200 * 160 / 164
+    assert 45 <= len(widths) <= 51
+    assert widths[0] == pytest.approx(square - 2, abs=1.5)
+    assert np.allclose(np.diff(widths[:10]), -4, atol=0.5)
 
 
 def test_rejects_bad_settings():

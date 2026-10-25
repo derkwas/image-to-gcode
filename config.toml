@@ -29,7 +29,7 @@ up_gcode = "G1 Z{z:.3f} F{z_feed:.0f}"
 width = 0.4              # pen line width, mm (preview only)
 
 [image]
-mode = "outline"         # outline | centerline | hatch, combine with "+", e.g. "outline+hatch"
+mode = "outline"         # outline | centerline | hatch | contour, combine with "+", e.g. "outline+hatch"
 threshold = "auto"       # 0-255, pixels darker than this are drawn; "auto" picks one
 invert = false           # draw the light parts instead of the dark ones
 page = 1                 # PDF page (1-based)
@@ -44,6 +44,7 @@ min_path_length = 0.5    # drop strokes shorter than this, mm
 hatch_spacing = 0.8      # mm between fill lines in hatch mode
 hatch_angle = 45.0       # degrees
 crosshatch = false       # second hatch pass at +90 degrees
+contour_spacing = 0.8    # mm between concentric rings in contour mode
 
 [output]
 optimize = true          # reorder strokes to minimise pen-up travel

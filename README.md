@@ -24,18 +24,6 @@ python3 -m venv .venv
 
 All settings are in [config.toml](config.toml), with comments. These are the ones you'll most likely change:
 
-| Setting | What it does |
-| --- | --- |
-| `pen.down_z` / `pen.up_z` | Z height while drawing / while moving between strokes |
-| `pen.safe_z` | Z height at the start and end of a job |
-| `pen.down_gcode` / `pen.up_gcode` | Command templates for moving the pen. Change these for a servo pen lift (e.g. `M280 P0 S90`) |
-| `machine.bed_width` / `bed_height` | Size of the area the pen can reach, in mm |
-| `machine.origin_x` / `origin_y` | Machine coordinates of that area's front-left corner. Use these to compensate for the pen's offset from the nozzle |
-| `machine.margin` | Blank border around the drawing |
-| `machine.start_gcode` / `end_gcode` | Commands run before and after the drawing (homing is in `start_gcode`) |
-| `image.mode` | `outline`, `centerline`, `hatch`, `contour`, or a combination such as `outline+hatch` |
-| `image.threshold` | 0–255. Pixels darker than this get drawn. `"auto"` picks a value for you |
-
 ### Modes
 
 - **outline**: traces the edge of every dark region. Good for logos and solid shapes.
